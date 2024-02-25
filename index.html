@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Can you Guess the number?</title>
+    <style>
+        
+        *{
+            box-sizing:border-box;
+        }
+        body{
+            margin:10px 0;
+        }
+        .box{
+            display:grid;
+            place-items: center;
+            font-size:25px;
+            width:50px;
+            height: 50px;
+            border:1px solid black;
+            margin:5px;
+        }
+     #row{
+         display:flex;
+     }
+       #all{
+           display:flex;
+           flex-direction:column;
+       }
+        .container{
+           display:flex;
+          
+            flex-direction: column;
+            width:100%;
+            align-items: center;
+        }
+        #numbers{
+        font-size:25px;
+            display:flex;
+            flex-direction: column;
+            
+        }
+        #numbers nav{
+            display:flex;
+            
+        }
+        #numbers nav span{
+            display:grid;
+            place-content: center;
+            width:50px;
+            height:50px;
+            border:1px solid #2e2e2e;
+            border-radius:5px;
+           color:white; background:rgba(0,0,0,0.7);
+            margin:1px;
+        }
+        #numbers input{
+            width:205px;
+            height:55px;
+            margin:2px;
+            border-radius: 14px;
+background: #e0e0e0;
+
+        }
+        #input{
+            text-align:center;
+            font-size:25px;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>Guess the Number</h1>
+        <div id="all">
+            
+        </div>
+        <div id="numbers">
+            <input type="number" id="input" disabled>
+            <nav>
+                <span onclick="input.value+='1'">1</span>
+                <span onclick="input.value+='2'">2</span>
+                <span onclick="input.value+='3'">3</span>
+                <span onclick="input.value+='0'">0</span>
+            </nav>
+            <nav>
+                <span onclick="input.value+='4'">4</span>
+                <span onclick="input.value+='5'">5</span>
+                <span onclick="input.value+='6'">6</span>
+                <span class='btn btn-success' onclick="sub()">=></span>
+            </nav>
+            <nav>
+                <span onclick="input.value+='7'">7</span>
+                <span onclick="input.value+='8'">8</span>
+                <span onclick="input.value+='9'">9</span>
+                <span onclick="back()"><-</span>
+            </nav>
+           
+        </div>
+    </div>
+    <script>
+        var i,j;
+        const before=Array(10);
+        const after=Array(10);
+        const div=Array(10);
+        const row=Array(10);
+        for(i=0;i<10;i++){
+        
+            div[i]=Array(4);
+           before[i] = document.createElement("nav");
+           after[i]= document.createElement("nav");
+           row[i]=document.createElement("div");
+            row[i].setAttribute("id",'row');
+            row[i].appendChild(before[i]);
+            for(j=0;j<4;j++){
+            
+                div[i][j]=document.createElement("div");
+                div[i][j].setAttribute("class","box");
+                div[i][j].setAttribute("id",i+""+j);
+               
+                row[i].appendChild(div[i][j]);
+                 row[i].appendChild(after[i]);
+            }
+           
+           document.getElementById("all"). appendChild(row[i]);
+           
+        }
+        var n=0;
+        var number=document.getElementById("numbers");
+        number.style = "position: absolute; top: " + (50 * n + 110) + "px;";
+       var numb;
+        
+    function back() {
+    var value = document.getElementById("input").value;
+    document.getElementById("input").value = value.substr(0, value.length - 1);
+}
+
+
+function generateRandomNumber() {
+    var digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    var shuffledDigits = shuffleArray(digits);
+    var randomNumber = '';
+
+    for (var i = 0; i < 4; i++) {
+        randomNumber += shuffledDigits[i];
+    }
+
+    return randomNumber;
+}
+
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
+var Four = generateRandomNumber();
+
+
+function sub(){
+    numb=document.getElementById("input").value;
+    numb=parseInt(numb);
+    var length=numb.toString().length;
+    if(length!=4){
+        document.getElementById("input").style="border:1px solid red; background:rgba(99,0,0,0.5)";
+    }
+    else{
+        document.getElementById("input").style="border:1px solid black; background:white";
+        var arrayofnumb=Array.from(String(numb),Number);
+       
+        var arrayofans=Array.from(String(Four),Number);
+        if(numb==Four){
+            alert("congrats you won ");
+            alert("correct number is "+Four);
+            location.reload();
+        }
+        else{
+         var poss=0, correct=0;
+           for(let a=0;a<4;a++){
+           div[n][a].innerHTML=arrayofnumb[a];
+           if(arrayofnumb[a]==arrayofans[a]){
+               correct++;
+           }
+           for(let y=0;y<4;y++){
+               if(arrayofnumb[a]==arrayofans[y]){
+                   poss++;
+               }
+           }
+        }
+         before[n].innerHTML=poss;
+         after[n].innerHTML=correct;
+         document.getElementById("input").value="";
+           
+             n++;
+            number.style = "position: absolute; top: " + (50 * n + 110) + "px;";
+        }
+        
+            
+    }
+}
+
+    </script>
+</body>
+</html>
